@@ -1,0 +1,105 @@
+/* Task 3 */
+
+int data1 = 0;
+int data2 = 0;
+const int led_pin = 13;
+const int btn1_pin = 12;
+const int btn2_pin = 11;
+
+void setup() {
+  pinMode(led_pin, OUTPUT);
+  pinMode(btn1_pin, INPUT);
+  pinMode(btn2_pin, INPUT_PULLUP);
+}
+
+void loop() {
+  data1 = digitalRead(btn1_pin);
+  data2 = !digitalRead(btn2_pin);
+  digitalWrite(led_pin, data1 | data2);
+  delay(10);
+}
+
+
+/* Task 4 - light stays on for the duration the button is held */
+
+int data1 = 0;
+int data2 = 0;
+int counter = 0;
+
+const int led_pin = 13;
+const int btn1_pin = 12;
+const int btn2_pin = 11;
+
+void setup()
+{
+  pinMode(led_pin, OUTPUT);
+  pinMode(btn1_pin, INPUT);
+  pinMode(btn2_pin, INPUT_PULLUP);
+}
+
+void loop()
+{
+  data1 = digitalRead(btn1_pin);
+  data2 = !digitalRead(btn2_pin);
+  
+  if ((data1 || data2)) {
+    digitalWrite(led_pin, HIGH);
+    counter++;
+    delay(10);
+  }
+  else if (!((data1 || data2))&&(counter > 0)){
+    delay(10*counter);
+    digitalWrite(led_pin, LOW);
+    counter = 0;
+  }
+}
+
+
+/* Task 6 - potentiometer */
+
+int data_in = 0;
+int data_out = 0;
+const int led_pin = 11;
+const int pot_pin = A0;
+
+void setup() {
+  pinMode(led_pin, OUTPUT);
+  pinMode(led_pin, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  data_in = analogRead(pot_pin);
+  Serial.print(data_in);
+  if (data_in > 511) {
+    data_out = map(data_in, 1023, 512, 0, 255);
+  }
+  else{
+  	data_out = map(data_in, 0, 511, 0, 255);
+  }
+  analogWrite(led_pin, data_out);
+  delay(10);
+}
+
+/* Task 8 */
+
+const int led_pin = 13;
+
+int state = 0;
+void setup() {
+  pinMode(led_pin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  if (Serial.available()){
+    state = Serial.parseInt();
+    if (state == 1){
+      digitalWrite(led_pin, HIGH);
+  	}
+  	else {
+    	digitalWrite(led_pin, LOW);
+  	}
+  }
+  delay(10);
+}
